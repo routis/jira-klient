@@ -4,7 +4,7 @@ import arrow.Kind
 import arrow.core.*
 import arrow.data.ReaderT
 import arrow.syntax.function.pipe
-import arrow.typeclasses.MonadError
+import arrow.typeclasses.MonadThrow
 import com.atlassian.jira.rest.client.api.JiraRestClient
 import com.atlassian.jira.rest.client.api.RestClientException
 import io.atlassian.util.concurrent.Promise
@@ -17,7 +17,7 @@ typealias JiraReaderT<F, A> = ReaderT<F, Ctx, A>
 interface PromiseSupport<F> {
 
     @Suppress("PropertyName")
-    val ME: MonadError<F, Throwable>
+    val ME: MonadThrow<F>
 
     /**
      * Transforms a [promise][p] into a kind of [F]

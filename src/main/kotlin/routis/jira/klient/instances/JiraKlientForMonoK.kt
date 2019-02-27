@@ -4,8 +4,7 @@ import arrow.Kind
 import arrow.effects.ForMonoK
 import arrow.effects.MonoK
 import arrow.effects.k
-import arrow.effects.monok.monadError.monadError
-import arrow.typeclasses.MonadError
+import arrow.effects.monok.monadThrow.monadThrow
 import io.atlassian.util.concurrent.Promise
 import io.atlassian.util.concurrent.Promises
 import reactor.core.publisher.Mono
@@ -17,7 +16,7 @@ import routis.jira.klient.JiraKlient
 @Suppress("unused")
 object JiraKlientForMonoK : JiraKlient<ForMonoK> {
 
-    override val ME: MonadError<ForMonoK, Throwable> = MonoK.monadError()
+    override val ME = MonoK.monadThrow()
 
     override fun <A> asKind(p: Promise<A>): Kind<ForMonoK, A> =
         Promises.toCompletableFuture(p).let { Mono.fromFuture(it) }.k()
