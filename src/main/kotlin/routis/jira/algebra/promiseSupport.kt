@@ -21,11 +21,12 @@ interface PromiseSupport<F> {
 
     fun <A> asKind(p: Promise<A>): Kind<F, A>
 
-    fun <C, A> withClient(getter: (Ctx) -> C, f: C.() -> Promise<A>): WithJira<F, A> = WithJira { client ->
-        with(getter(client)) { f().pipe(::asKind) }
-    }
+    fun <C, A> withClient(getter: (Ctx) -> C, f: C.() -> Promise<A>): WithJira<F, A> =
+        WithJira { client ->
+            with(getter(client)) { f().pipe(::asKind) }
+        }
 
-    fun <C, A> lookupWithClient(getter: (Ctx) -> C, f: C.() -> Promise<A>): WithJira<F, Option<A>> =
+    fun <C, A> withClientLookup(getter: (Ctx) -> C, f: C.() -> Promise<A>): WithJira<F, Option<A>> =
         WithJira { client ->
             with(getter(client)) {
                 f().recover404WithNone().pipe(::asKind)

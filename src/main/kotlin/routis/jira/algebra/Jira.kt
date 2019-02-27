@@ -1,9 +1,7 @@
 package routis.jira.algebra
 
-import routis.jira.algebra.client.*
-
 /**
- * @see com.atlassian.jira.rest.client.api.JiraRestClient
+ * Wrapper of [com.atlassian.jira.rest.client.api.JiraRestClient]
  */
 interface Jira<F> : PromiseSupport<F> {
 
