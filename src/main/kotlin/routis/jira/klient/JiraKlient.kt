@@ -1,5 +1,10 @@
 package routis.jira.klient
 
+import arrow.data.KleisliPartialOf
+import arrow.instances.kleisli.monadThrow.monadThrow
+import arrow.typeclasses.MonadThrow
+import routis.jira.klient.JiraKlient.Companion.invoke
+
 /**
  * Wraps the functionality of [com.atlassian.jira.rest.client.api.JiraRestClient]
  * and provides a number of kleisli-based clients.
@@ -7,6 +12,10 @@ package routis.jira.klient
  * Use [invoke] to implement an instance by providing a [PromiseSupport]
  */
 interface JiraKlient<F> : PromiseSupport<F> {
+
+    @Suppress("PropertyName")
+    val JIRA_READER_T: MonadThrow<KleisliPartialOf<F, Ctx>>
+        get() = JiraReaderT.monadThrow(ME)
 
     val issues: Issues<F>
         get() = object : Issues<F>, PromiseSupport<F> by this {}
