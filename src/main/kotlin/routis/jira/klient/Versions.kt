@@ -1,4 +1,4 @@
-package routis.jira.algebra
+package routis.jira.klient
 
 import arrow.core.Option
 import com.atlassian.jira.rest.client.api.domain.Version
@@ -12,20 +12,20 @@ import java.net.URI
  */
 interface Versions<F> : PromiseSupport<F> {
 
-    fun getVersion(versionUri: URI): WithJira<F, Option<Version>> =
+    fun getVersion(versionUri: URI): JiraReaderT<F, Option<Version>> =
         withClientLookup(Ctx::getVersionRestClient) { getVersion(versionUri) }
 
-    fun createVersion(version: VersionInput): WithJira<F, Version> =
+    fun createVersion(version: VersionInput): JiraReaderT<F, Version> =
         withClient(Ctx::getVersionRestClient) { createVersion(version) }
 
-    fun updateVersion(versionUri: URI, versionInput: VersionInput): WithJira<F, Version> =
+    fun updateVersion(versionUri: URI, versionInput: VersionInput): JiraReaderT<F, Version> =
         withClient(Ctx::getVersionRestClient) { updateVersion(versionUri, versionInput) }
 
     fun removeVersion(
         versionUri: URI,
         moveFixIssuesToVersionUri: Option<URI>,
         moveAffectedIssuesToVersionUri: Option<URI>
-    ): WithJira<F, Void> = withClient(Ctx::getVersionRestClient) {
+    ): JiraReaderT<F, Void> = withClient(Ctx::getVersionRestClient) {
         removeVersion(
             versionUri,
             moveFixIssuesToVersionUri.orNull(),
@@ -33,15 +33,15 @@ interface Versions<F> : PromiseSupport<F> {
         )
     }
 
-    fun getVersionRelatedIssuesCount(versionUri: URI): WithJira<F, VersionRelatedIssuesCount> =
+    fun getVersionRelatedIssuesCount(versionUri: URI): JiraReaderT<F, VersionRelatedIssuesCount> =
         withClient(Ctx::getVersionRestClient) { getVersionRelatedIssuesCount(versionUri) }
 
-    fun getNumUnresolvedIssues(versionUri: URI): WithJira<F, Int> =
+    fun getNumUnresolvedIssues(versionUri: URI): JiraReaderT<F, Int> =
         withClient(Ctx::getVersionRestClient) { getNumUnresolvedIssues(versionUri) }
 
-    fun moveVersionAfter(versionUri: URI, afterVersionUri: URI): WithJira<F, Version> =
+    fun moveVersionAfter(versionUri: URI, afterVersionUri: URI): JiraReaderT<F, Version> =
         withClient(Ctx::getVersionRestClient) { moveVersionAfter(versionUri, afterVersionUri) }
 
-    fun moveVersion(versionUri: URI, versionPosition: VersionPosition): WithJira<F, Version> =
+    fun moveVersion(versionUri: URI, versionPosition: VersionPosition): JiraReaderT<F, Version> =
         withClient(Ctx::getVersionRestClient) { moveVersion(versionUri, versionPosition) }
 }

@@ -1,4 +1,4 @@
-package routis.jira.algebra
+package routis.jira.klient
 
 import arrow.core.Option
 import com.atlassian.jira.rest.client.api.domain.Permissions
@@ -9,6 +9,6 @@ import com.atlassian.jira.rest.client.api.domain.input.MyPermissionsInput
  */
 interface MyPermissions<F> : PromiseSupport<F> {
 
-    fun getMyPermissions(permissionInput: Option<MyPermissionsInput>): WithJira<F, Permissions> =
+    fun getMyPermissions(permissionInput: Option<MyPermissionsInput>): JiraReaderT<F, Permissions> =
         withClient(Ctx::getMyPermissionsRestClient) { getMyPermissions(permissionInput.orNull()) }
 }

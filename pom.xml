@@ -5,9 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>routis.jira</groupId>
-    <artifactId>jira-client</artifactId>
+    <artifactId>jira-klient</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-
 
     <properties>
         <!-- General -->
@@ -24,19 +23,16 @@
 
 
     <dependencies>
-
         <dependency>
             <groupId>com.atlassian.jira</groupId>
             <artifactId>jira-rest-java-client-api</artifactId>
             <version>${jira-rest-java-client.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.atlassian.jira</groupId>
             <artifactId>jira-rest-java-client-core</artifactId>
             <version>${jira-rest-java-client.version}</version>
         </dependency>
-
         <dependency>
             <groupId>io.arrow-kt</groupId>
             <artifactId>arrow-core</artifactId>
@@ -67,7 +63,6 @@
             <artifactId>arrow-instances-data</artifactId>
             <version>${arrow-kt.version}</version>
         </dependency>
-
         <dependency>
             <groupId>io.arrow-kt</groupId>
             <artifactId>arrow-effects-reactor</artifactId>
@@ -78,14 +73,11 @@
             <artifactId>arrow-effects-reactor-instances</artifactId>
             <version>${arrow-kt.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
-
-
         <dependency>
             <groupId>io.atlassian.fugue</groupId>
             <artifactId>fugue</artifactId>
@@ -99,10 +91,7 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-
     </dependencies>
-
-
     <build>
         <plugins>
             <plugin>
@@ -110,24 +99,6 @@
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <version>${kotlin.version}</version>
                 <executions>
-                    <!--<execution>-->
-                    <!--<id>kapt</id>-->
-                    <!--<goals>-->
-                    <!--<goal>kapt</goal>-->
-                    <!--</goals>-->
-                    <!--<configuration>-->
-                    <!--<sourceDirs>-->
-                    <!--<sourceDir>src/main/kotlin</sourceDir>-->
-                    <!--</sourceDirs>-->
-                    <!--<annotationProcessorPaths>-->
-                    <!--<annotationProcessorPath>-->
-                    <!--<groupId>io.arrow-kt</groupId>-->
-                    <!--<artifactId>arrow-annotations-processor</artifactId>-->
-                    <!--<version>${arrow-kt.version}</version>-->
-                    <!--</annotationProcessorPath>-->
-                    <!--</annotationProcessorPaths>-->
-                    <!--</configuration>-->
-                    <!--</execution>-->
                     <execution>
                         <id>compile</id>
                         <phase>compile</phase>
@@ -152,7 +123,6 @@
                                 <sourceDir>${project.basedir}/src/test/java</sourceDir>
                             </sourceDirs>
                         </configuration>
-
                     </execution>
                 </executions>
             </plugin>

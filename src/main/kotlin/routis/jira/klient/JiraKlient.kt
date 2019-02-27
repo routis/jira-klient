@@ -1,9 +1,12 @@
-package routis.jira.algebra
+package routis.jira.klient
 
 /**
- * Wrapper of [com.atlassian.jira.rest.client.api.JiraRestClient]
+ * Wraps the functionality of [com.atlassian.jira.rest.client.api.JiraRestClient]
+ * and provides a number of kleisli-based clients.
+ *
+ * Use [invoke] to implement an instance by providing a [PromiseSupport]
  */
-interface Jira<F> : PromiseSupport<F> {
+interface JiraKlient<F> : PromiseSupport<F> {
 
     val issues: Issues<F>
         get() = object : Issues<F>, PromiseSupport<F> by this {}
@@ -30,7 +33,7 @@ interface Jira<F> : PromiseSupport<F> {
         get() = object : ProjectRoles<F>, PromiseSupport<F> by this {}
 
     companion object {
-        operator fun <F> invoke(ps: PromiseSupport<F>): Jira<F> =
-            object : Jira<F>, PromiseSupport<F> by ps {}
+        operator fun <F> invoke(ps: PromiseSupport<F>): JiraKlient<F> =
+            object : JiraKlient<F>, PromiseSupport<F> by ps {}
     }
 }

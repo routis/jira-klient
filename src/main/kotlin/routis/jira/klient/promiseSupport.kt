@@ -1,8 +1,8 @@
-package routis.jira.algebra
+package routis.jira.klient
 
 import arrow.Kind
 import arrow.core.*
-import arrow.data.Kleisli
+import arrow.data.ReaderT
 import arrow.syntax.function.pipe
 import arrow.typeclasses.MonadError
 import com.atlassian.jira.rest.client.api.JiraRestClient
@@ -11,7 +11,7 @@ import io.atlassian.util.concurrent.Promise
 import io.atlassian.util.concurrent.Promises
 
 typealias Ctx = JiraRestClient
-typealias WithJira<F, A> = Kleisli<F, Ctx, A>
+typealias JiraReaderT<F, A> = ReaderT<F, Ctx, A>
 
 
 interface PromiseSupport<F> {
@@ -19,20 +19,22 @@ interface PromiseSupport<F> {
     @Suppress("PropertyName")
     val ME: MonadError<F, Throwable>
 
+    /**
+     * Transforms a [promise][p] into a kind of [F]
+     */
     fun <A> asKind(p: Promise<A>): Kind<F, A>
 
-    fun <C, A> withClient(getter: (Ctx) -> C, f: C.() -> Promise<A>): WithJira<F, A> =
-        WithJira { client ->
+    fun <C, A> withClient(getter: (Ctx) -> C, f: C.() -> Promise<A>): JiraReaderT<F, A> =
+        JiraReaderT { client ->
             with(getter(client)) { f().pipe(::asKind) }
         }
 
-    fun <C, A> withClientLookup(getter: (Ctx) -> C, f: C.() -> Promise<A>): WithJira<F, Option<A>> =
-        WithJira { client ->
+    fun <C, A> withClientLookup(getter: (Ctx) -> C, f: C.() -> Promise<A>): JiraReaderT<F, Option<A>> =
+        JiraReaderT { client ->
             with(getter(client)) {
                 f().recover404WithNone().pipe(::asKind)
             }
         }
-
 }
 
 private fun <A> Promise<A>.recover404WithNone(): Promise<Option<A>> =

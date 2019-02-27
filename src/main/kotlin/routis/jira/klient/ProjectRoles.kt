@@ -1,4 +1,4 @@
-package routis.jira.algebra
+package routis.jira.klient
 
 import arrow.core.Option
 import com.atlassian.jira.rest.client.api.domain.ProjectRole
@@ -9,13 +9,13 @@ import java.net.URI
  */
 interface ProjectRoles<F> : PromiseSupport<F> {
 
-    fun getRole(uri: URI): WithJira<F, Option<ProjectRole>> =
+    fun getRole(uri: URI): JiraReaderT<F, Option<ProjectRole>> =
         withClientLookup(Ctx::getProjectRolesRestClient) { getRole(uri) }
 
-    fun getRole(projectUri: URI, roleId: Long): WithJira<F, Option<ProjectRole>> =
+    fun getRole(projectUri: URI, roleId: Long): JiraReaderT<F, Option<ProjectRole>> =
         withClientLookup(Ctx::getProjectRolesRestClient) { getRole(projectUri, roleId) }
 
-    fun getRoles(projectUri: URI): WithJira<F, List<ProjectRole>> =
+    fun getRoles(projectUri: URI): JiraReaderT<F, List<ProjectRole>> =
         withClient(Ctx::getProjectRolesRestClient) {
             getRoles(projectUri).map { rs -> rs.toList() }
         }
