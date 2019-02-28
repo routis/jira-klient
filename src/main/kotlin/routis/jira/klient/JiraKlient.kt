@@ -1,8 +1,5 @@
 package routis.jira.klient
 
-import arrow.data.Kleisli
-import arrow.instances.KleisliMonadThrow
-import arrow.instances.kleisli.monadThrow.monadThrow
 import routis.jira.klient.JiraKlient.Companion.invoke
 
 /**
@@ -12,10 +9,6 @@ import routis.jira.klient.JiraKlient.Companion.invoke
  * Use [invoke] to implement an instance by providing a [PromiseSupport]
  */
 interface JiraKlient<F> : PromiseSupport<F> {
-
-    @Suppress("PropertyName")
-    val JIRA_READER_T: KleisliMonadThrow<F, Ctx>
-        get() = Kleisli.monadThrow(ME)
 
     val issues: Issues<F>
         get() = object : Issues<F>, PromiseSupport<F> by this {}
