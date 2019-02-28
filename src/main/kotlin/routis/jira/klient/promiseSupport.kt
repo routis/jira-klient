@@ -3,8 +3,8 @@ package routis.jira.klient
 import arrow.Kind
 import arrow.core.*
 import arrow.data.ReaderT
+import arrow.effects.typeclasses.Async
 import arrow.syntax.function.pipe
-import arrow.typeclasses.MonadThrow
 import com.atlassian.jira.rest.client.api.JiraRestClient
 import com.atlassian.jira.rest.client.api.RestClientException
 import io.atlassian.util.concurrent.Promise
@@ -17,7 +17,7 @@ typealias JiraReaderT<F, A> = ReaderT<F, Ctx, A>
 interface PromiseSupport<F> {
 
     @Suppress("PropertyName")
-    val ME: MonadThrow<F>
+    val ME: Async<F>
 
     /**
      * Transforms a [promise][p] into a kind of [F]

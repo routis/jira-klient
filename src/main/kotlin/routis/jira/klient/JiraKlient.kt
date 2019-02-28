@@ -1,8 +1,8 @@
 package routis.jira.klient
 
-import arrow.data.KleisliPartialOf
+import arrow.data.Kleisli
+import arrow.instances.KleisliMonadThrow
 import arrow.instances.kleisli.monadThrow.monadThrow
-import arrow.typeclasses.MonadThrow
 import routis.jira.klient.JiraKlient.Companion.invoke
 
 /**
@@ -14,8 +14,8 @@ import routis.jira.klient.JiraKlient.Companion.invoke
 interface JiraKlient<F> : PromiseSupport<F> {
 
     @Suppress("PropertyName")
-    val JIRA_READER_T: MonadThrow<KleisliPartialOf<F, Ctx>>
-        get() = JiraReaderT.monadThrow(ME)
+    val JIRA_READER_T: KleisliMonadThrow<F, Ctx>
+        get() = Kleisli.monadThrow(ME)
 
     val issues: Issues<F>
         get() = object : Issues<F>, PromiseSupport<F> by this {}

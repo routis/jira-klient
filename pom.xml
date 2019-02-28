@@ -21,17 +21,14 @@
         <arrow-kt.version>0.8.2</arrow-kt.version>
     </properties>
 
-
     <dependencies>
         <dependency>
             <groupId>com.atlassian.jira</groupId>
             <artifactId>jira-rest-java-client-api</artifactId>
-            <version>${jira-rest-java-client.version}</version>
         </dependency>
         <dependency>
             <groupId>com.atlassian.jira</groupId>
             <artifactId>jira-rest-java-client-core</artifactId>
-            <version>${jira-rest-java-client.version}</version>
         </dependency>
         <dependency>
             <groupId>io.arrow-kt</groupId>
@@ -65,12 +62,32 @@
         </dependency>
         <dependency>
             <groupId>io.arrow-kt</groupId>
+            <artifactId>arrow-effects</artifactId>
+            <version>${arrow-kt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.arrow-kt</groupId>
+            <artifactId>arrow-effects-instances</artifactId>
+            <version>${arrow-kt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.arrow-kt</groupId>
             <artifactId>arrow-effects-reactor</artifactId>
             <version>${arrow-kt.version}</version>
         </dependency>
         <dependency>
             <groupId>io.arrow-kt</groupId>
             <artifactId>arrow-effects-reactor-instances</artifactId>
+            <version>${arrow-kt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.arrow-kt</groupId>
+            <artifactId>arrow-effects-rx2</artifactId>
+            <version>${arrow-kt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.arrow-kt</groupId>
+            <artifactId>arrow-effects-rx2-instances</artifactId>
             <version>${arrow-kt.version}</version>
         </dependency>
         <dependency>
@@ -81,17 +98,36 @@
         <dependency>
             <groupId>io.atlassian.fugue</groupId>
             <artifactId>fugue</artifactId>
-            <version>${fugue.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk14</artifactId>
             <version>${slf4j-jdk14.version}</version>
-            <scope>runtime</scope>
-            <optional>true</optional>
+            <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.atlassian.jira</groupId>
+                <artifactId>jira-rest-java-client-api</artifactId>
+                <version>${jira-rest-java-client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.atlassian.jira</groupId>
+                <artifactId>jira-rest-java-client-core</artifactId>
+                <version>${jira-rest-java-client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.atlassian.fugue</groupId>
+                <artifactId>fugue</artifactId>
+                <version>${fugue.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <build>
         <plugins>
             <plugin>
