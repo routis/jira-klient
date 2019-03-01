@@ -64,6 +64,7 @@ private fun <F> JiraKlient<F>.getIssueView(issueKey: String): JiraKleisli<F, Opt
     OPTION_T_JIRA_KLEISLI.binding {
 
         val issue = issues.getIssue(issueKey).asOptionT().bind()
+
         val ts = issues.getTransitions(issue).asSomeT().bind()
         IssueView(issue, ts)
 

@@ -6,6 +6,7 @@ import arrow.data.Kleisli
 import arrow.data.KleisliPartialOf
 import arrow.data.OptionT
 import arrow.data.OptionTPartialOf
+import arrow.effects.typeclasses.Async
 import arrow.instances.kleisli.monad.monad
 import arrow.instances.optiont.monad.monad
 import arrow.syntax.function.pipe
@@ -36,7 +37,7 @@ interface PromiseSupport<F> {
      * The monad effect into which the [Promise] (returned from [JiraRestClient]) is
      * being lifted to
      */
-    val ME: Monad<F>
+    val ME: Async<F>
 
     val JIRA_KLEISLI: Monad<KleisliPartialOf<F, Ctx>>
         get() = Kleisli.monad(ME)
