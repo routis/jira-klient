@@ -1,11 +1,29 @@
 package routis.jira.klient
 
+import arrow.Kind
 import arrow.core.Option
+import arrow.core.Try
 import arrow.core.Tuple2
 import arrow.data.fix
+import com.atlassian.jira.rest.client.api.JiraRestClient
 import com.atlassian.jira.rest.client.api.domain.Issue
 import com.atlassian.jira.rest.client.api.domain.Transition
 import com.atlassian.jira.rest.client.api.domain.User
+import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory
+import java.net.URI
+
+class Program<F>(private val klient: JiraKlient<F>) {
+
+    fun run(
+        client: JiraRestClient,
+        username: String,
+        issueKey: String
+    ): Kind<F, Tuple2<Option<UserView>, Option<IssueView>>> {
+        val operation = klient.getUserViewAndIssueView(username, issueKey)
+        return operation.run(client)
+    }
+}
+
 
 /**
  * The two operations will be evaluated individually since we use the [arrow.typeclasses.Applicative.tupled]
@@ -50,3 +68,9 @@ private fun <F> JiraKlient<F>.getIssueView(issueKey: String): JiraKleisli<F, Opt
         IssueView(issue, ts)
 
     }.fix().value().fix()
+
+
+fun jiraClient(url: String, username: String, password: String): Try<JiraRestClient> = Try {
+    AsynchronousJiraRestClientFactory()
+        .createWithBasicHttpAuthentication(URI(url), username, password)
+}
