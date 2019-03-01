@@ -8,7 +8,7 @@ import arrow.data.fix
 import arrow.typeclasses.Functor
 
 /**
- * Expresses a kleisli (reader) for an optional [A] as a [OptionT] transformer.
+ * Expresses a kleisli (reader) for an optional [A] as an [OptionT] transformer.
  *
  * This is useful when binding kleisli's that return an optional [A]
  * Function [asKleisli] provides the opposite transformation
