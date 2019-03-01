@@ -7,13 +7,13 @@ import java.net.URI
 
 interface Projects<F> : PromiseSupport<F> {
 
-    fun getProject(key: String): JiraReaderT<F, Option<Project>> =
+    fun getProject(key: String): JiraKleisli<F, Option<Project>> =
         withClientLookup(Ctx::getProjectClient) { getProject(key) }
 
-    fun getProject(projectUri: URI): JiraReaderT<F, Option<Project>> =
+    fun getProject(projectUri: URI): JiraKleisli<F, Option<Project>> =
         withClientLookup(Ctx::getProjectClient) { getProject(projectUri) }
 
-    fun getAllProjects(): JiraReaderT<F, List<BasicProject>> = withClient(Ctx::getProjectClient) {
+    fun getAllProjects(): JiraKleisli<F, List<BasicProject>> = withClient(Ctx::getProjectClient) {
         allProjects.map { ps -> ps.toList() }
     }
 }

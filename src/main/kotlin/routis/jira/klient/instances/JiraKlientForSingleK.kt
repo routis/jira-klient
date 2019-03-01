@@ -4,8 +4,8 @@ import arrow.Kind
 import arrow.effects.ForSingleK
 import arrow.effects.SingleK
 import arrow.effects.k
-import arrow.effects.singlek.async.async
-import arrow.effects.typeclasses.Async
+import arrow.effects.singlek.monad.monad
+import arrow.typeclasses.Monad
 import io.atlassian.util.concurrent.Promise
 import io.atlassian.util.concurrent.Promises
 import io.reactivex.Single
@@ -16,8 +16,8 @@ import routis.jira.klient.JiraKlient
  */
 object JiraKlientForSingleK : JiraKlient<ForSingleK> {
 
-    override val ME: Async<ForSingleK>
-        get() = SingleK.async()
+    override val ME: Monad<ForSingleK>
+        get() = SingleK.monad()
 
     override fun <A> asKind(p: Promise<A>): Kind<ForSingleK, A> =
         Promises.toCompletableFuture(p).let { Single.fromFuture(it) }.k()

@@ -16,17 +16,17 @@ interface Searches<F> : PromiseSupport<F> {
         maxResults: Int = 50,
         startAt: Int = 0,
         fields: Set<String> = emptySet()
-    ): JiraReaderT<F, SearchResult> =
+    ): JiraKleisli<F, SearchResult> =
         withClient(Ctx::getSearchClient) { searchJql(jql, maxResults, startAt, fields) }
 
 
-    fun getFavouriteFilters(): JiraReaderT<F, List<Filter>> = withClient(Ctx::getSearchClient) {
+    fun getFavouriteFilters(): JiraKleisli<F, List<Filter>> = withClient(Ctx::getSearchClient) {
         favouriteFilters.map { fs -> fs?.toList() ?: emptyList() }
     }
 
-    fun getFilter(filterUri: URI): JiraReaderT<F, Option<Filter>> =
+    fun getFilter(filterUri: URI): JiraKleisli<F, Option<Filter>> =
         withClientLookup(Ctx::getSearchClient) { getFilter(filterUri) }
 
-    fun getFilter(id: Long): JiraReaderT<F, Option<Filter>> =
+    fun getFilter(id: Long): JiraKleisli<F, Option<Filter>> =
         withClientLookup(Ctx::getSearchClient) { getFilter(id) }
 }

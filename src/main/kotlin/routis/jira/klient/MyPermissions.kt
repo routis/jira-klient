@@ -9,6 +9,6 @@ import com.atlassian.jira.rest.client.api.domain.input.MyPermissionsInput
  */
 interface MyPermissions<F> : PromiseSupport<F> {
 
-    fun getMyPermissions(permissionInput: Option<MyPermissionsInput>): JiraReaderT<F, Permissions> =
+    fun getMyPermissions(permissionInput: Option<MyPermissionsInput>): JiraKleisli<F, Permissions> =
         withClient(Ctx::getMyPermissionsRestClient) { getMyPermissions(permissionInput.orNull()) }
 }

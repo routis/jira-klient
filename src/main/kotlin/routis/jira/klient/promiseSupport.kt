@@ -6,19 +6,18 @@ import arrow.data.Kleisli
 import arrow.data.KleisliPartialOf
 import arrow.data.OptionT
 import arrow.data.OptionTPartialOf
-import arrow.instances.KleisliMonadThrow
-import arrow.instances.kleisli.monadThrow.monadThrow
-import arrow.instances.optiont.monadThrow.monadThrow
+import arrow.instances.kleisli.monad.monad
+import arrow.instances.optiont.monad.monad
 import arrow.syntax.function.pipe
-import arrow.typeclasses.MonadThrow
+import arrow.typeclasses.Monad
 import com.atlassian.jira.rest.client.api.JiraRestClient
 import com.atlassian.jira.rest.client.api.RestClientException
 import io.atlassian.util.concurrent.Promise
 import io.atlassian.util.concurrent.Promises
 
 typealias Ctx = JiraRestClient
-typealias JiraReaderT<F, A> = Kleisli<F, Ctx, A>
-typealias OptionTJiraReaderT<F, A> = OptionT<KleisliPartialOf<F, Ctx>, A>
+typealias JiraKleisli<F, A> = Kleisli<F, Ctx, A>
+typealias OptionTJiraKleisli<F, A> = OptionT<KleisliPartialOf<F, Ctx>, A>
 
 /**
  * [JiraRestClient] is an asynchronous REST client that is build around the [Promise] class.
@@ -30,22 +29,20 @@ typealias OptionTJiraReaderT<F, A> = OptionT<KleisliPartialOf<F, Ctx>, A>
  * [ME] The monad effect into which the [Promise] (returned from [JiraRestClient]) is
  * being lifted to
  */
+@Suppress("PropertyName")
 interface PromiseSupport<F> {
 
     /**
      * The monad effect into which the [Promise] (returned from [JiraRestClient]) is
      * being lifted to
      */
-    @Suppress("PropertyName")
-    val ME: MonadThrow<F>
+    val ME: Monad<F>
 
-    @Suppress("PropertyName")
-    val JIRA_READER_T: KleisliMonadThrow<F, Ctx>
-        get() = Kleisli.monadThrow(ME)
+    val JIRA_KLEISLI: Monad<KleisliPartialOf<F, Ctx>>
+        get() = Kleisli.monad(ME)
 
-    @Suppress("PropertyName")
-    val OPTION_T_JIRA_READER_T: MonadThrow<OptionTPartialOf<KleisliPartialOf<F, Ctx>>>
-        get() = OptionT.monadThrow(JIRA_READER_T)
+    val OPTION_T_JIRA_KLEISLI: Monad<OptionTPartialOf<KleisliPartialOf<F, Ctx>>>
+        get() = OptionT.monad(JIRA_KLEISLI)
 
     /**
      * Transforms a [promise][p] into a kind of [F]
@@ -59,8 +56,8 @@ interface PromiseSupport<F> {
      * executes the given [block][doWith] and transforms the resulting [Promise]
      * into the defined monad[ME]
      */
-    fun <C, A> withClient(get: (Ctx) -> C, doWith: C.() -> Promise<A>): JiraReaderT<F, A> =
-        JiraReaderT {
+    fun <C, A> withClient(get: (Ctx) -> C, doWith: C.() -> Promise<A>): JiraKleisli<F, A> =
+        JiraKleisli {
             get(it).doWith().pipe(::asKind)
         }
 
@@ -70,12 +67,12 @@ interface PromiseSupport<F> {
      * [JiraRestClient] throws an HTTP404 error when looking up a specific entity [A]
      * that doesn't exit. So, this method 'recovers a HTTP404' to [None]
      */
-    fun <C, A> withClientLookup(get: (Ctx) -> C, doWith: C.() -> Promise<A>): JiraReaderT<F, Option<A>> =
-        JiraReaderT {
+    fun <C, A> withClientLookup(get: (Ctx) -> C, doWith: C.() -> Promise<A>): JiraKleisli<F, Option<A>> =
+        JiraKleisli {
             get(it).doWith().recover404WithNone().pipe(::asKind)
         }
 
-    fun <A> JiraReaderT<F, A>.asSomeT(): OptionTJiraReaderT<F, A> = asSomeT(ME)
+    fun <A> JiraKleisli<F, A>.asSomeT(): OptionTJiraKleisli<F, A> = asSomeT(ME)
 }
 
 

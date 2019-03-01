@@ -15,8 +15,8 @@ import com.atlassian.jira.rest.client.api.domain.User
 fun <F> JiraKlient<F>.getUserViewAndIssueView(
     username: String,
     issueKey: String
-): JiraReaderT<F, Tuple2<Option<UserView>, Option<IssueView>>> =
-    JIRA_READER_T.tupled(
+): JiraKleisli<F, Tuple2<Option<UserView>, Option<IssueView>>> =
+    JIRA_KLEISLI.tupled(
         getUserView(username),
         getIssueView(issueKey)
     ).fix()
@@ -28,10 +28,10 @@ data class UserView(val userName: String, val emailAddress: String) {
     }
 }
 
-fun <F> JiraKlient<F>.getUserView(username: String): JiraReaderT<F, Option<UserView>> =
+fun <F> JiraKlient<F>.getUserView(username: String): JiraKleisli<F, Option<UserView>> =
     users.getUser(username)
         .asOptionT()
-        .map(JIRA_READER_T) { UserView.of(it) }
+        .map(JIRA_KLEISLI) { UserView.of(it) }
         .asKleisli()
 
 
@@ -42,8 +42,8 @@ data class IssueView(val issue: Issue, val transitions: List<Transition>)
  *
  * If there is a issue, then a call for transitions will be placed
  */
-private fun <F> JiraKlient<F>.getIssueView(issueKey: String): JiraReaderT<F, Option<IssueView>> =
-    OPTION_T_JIRA_READER_T.binding {
+private fun <F> JiraKlient<F>.getIssueView(issueKey: String): JiraKleisli<F, Option<IssueView>> =
+    OPTION_T_JIRA_KLEISLI.binding {
 
         val issue = issues.getIssue(issueKey).asOptionT().bind()
         val ts = issues.getTransitions(issue).asSomeT().bind()
