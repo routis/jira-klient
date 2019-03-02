@@ -21,5 +21,5 @@ object JiraKlientForMonoK : JiraKlient<ForMonoK> {
         get() = MonoK.async()
 
     override fun <A> asKind(p: Promise<A>): Kind<ForMonoK, A> =
-        Promises.toCompletableFuture(p).let { Mono.fromFuture(it) }.k()
+        Promises.toCompletableFuture(p).let { Mono.fromFuture(it).k() }
 }
