@@ -11,6 +11,8 @@ import com.atlassian.jira.rest.client.api.domain.Issue
 import com.atlassian.jira.rest.client.api.domain.Transition
 import com.atlassian.jira.rest.client.api.domain.User
 import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory
+import routis.jira.klient.util.asKleisli
+import routis.jira.klient.util.asOptionT
 import java.net.URI
 
 class Program<F>(private val klient: JiraKlient<F>) {
@@ -33,7 +35,6 @@ class Program<F>(private val klient: JiraKlient<F>) {
 /**
  * The two operations will be evaluated individually since we use the [arrow.typeclasses.Applicative.tupled]
  * That is two independent calls will be made
- *
  */
 private fun <F> JiraKlient<F>.getUserViewAndIssueView(
     username: String,

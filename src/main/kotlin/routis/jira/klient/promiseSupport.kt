@@ -9,16 +9,20 @@ import arrow.data.OptionTPartialOf
 import arrow.effects.typeclasses.Async
 import arrow.instances.kleisli.monad.monad
 import arrow.instances.optiont.monad.monad
-import arrow.syntax.function.pipe
 import arrow.typeclasses.Monad
 import com.atlassian.jira.rest.client.api.JiraRestClient
 import com.atlassian.jira.rest.client.api.RestClientException
 import io.atlassian.util.concurrent.Promise
 import io.atlassian.util.concurrent.Promises
+import routis.jira.klient.util.asSomeT
 
-typealias Ctx = JiraRestClient
-typealias JiraKleisli<F, A> = Kleisli<F, Ctx, A>
-typealias OptionTJiraKleisli<F, A> = OptionT<KleisliPartialOf<F, Ctx>, A>
+/**
+ * [JiraRestClient] contains various specific purpose clients like
+ * [com.atlassian.jira.rest.client.api.IssueRestClient].
+ *
+ * This alias defines a getter to one of these clients
+ */
+typealias Client<C> = (Ctx)-> C
 
 /**
  * [JiraRestClient] is an asynchronous REST client that is build around the [Promise] class.
@@ -53,13 +57,13 @@ interface PromiseSupport<F> {
     /**
      * Creates a kleisli (reader) that will :
      *
-     * [Gets][get] the client [C] from the [context][C],
+     * [Gets][get] the client [C] from the [context][Ctx],
      * executes the given [block][doWith] and transforms the resulting [Promise]
      * into the defined monad[ME]
      */
-    fun <C, A> withClient(get: (Ctx) -> C, doWith: C.() -> Promise<A>): JiraKleisli<F, A> =
+    fun <C, A> withClient(get: Client<C>, doWith: C.() -> Promise<A>): JiraKleisli<F, A> =
         JiraKleisli {
-            get(it).doWith().pipe(::asKind)
+            get(it).doWith().let(::asKind)
         }
 
     /**
@@ -68,9 +72,9 @@ interface PromiseSupport<F> {
      * [JiraRestClient] throws an HTTP404 error when looking up a specific entity [A]
      * that doesn't exit. So, this method 'recovers a HTTP404' to [None]
      */
-    fun <C, A> withClientLookup(get: (Ctx) -> C, doWith: C.() -> Promise<A>): JiraKleisli<F, Option<A>> =
+    fun <C, A> withClientLookup(get: Client<C>, doWith: C.() -> Promise<A>): JiraKleisli<F, Option<A>> =
         JiraKleisli {
-            get(it).doWith().recover404WithNone().pipe(::asKind)
+            get(it).doWith().recover404WithNone().let(::asKind)
         }
 
     fun <A> JiraKleisli<F, A>.asSomeT(): OptionTJiraKleisli<F, A> = asSomeT(ME)
@@ -78,6 +82,13 @@ interface PromiseSupport<F> {
 
 
 /**
+ * If the given promise has a value, it returns  a Promise(Some)
+ * In case the given promise is rejected,
+ * <ol>
+ * <li>If error corresponds to an HTTP 404 (not found) status code,
+ * it returns an (accepted, non-erroneous) Promise(None)</li>
+ * <li>Otherwise, in case of another error, it returns a rejected Promise</li>
+ *</ol>
  *
  */
 private fun <A> Promise<A>.recover404WithNone(): Promise<Option<A>> {

@@ -7,6 +7,8 @@ import routis.jira.klient.JiraKlient.Companion.invoke
  * and provides a number of kleisli-based clients.
  *
  * Use [invoke] to implement an instance by providing a [PromiseSupport]
+ *
+ * @see JiraKleisli This is the return type for all methods of the individual clients
  */
 interface JiraKlient<F> : PromiseSupport<F> {
 
