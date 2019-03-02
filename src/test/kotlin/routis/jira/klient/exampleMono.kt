@@ -10,16 +10,10 @@ fun main(args: Array<String>) {
     val password = args[2]
     val issueKey = "foo"
 
-
-    val client = jiraClient(url, username, password).getOrElse { throw it }
     val program = Program(JiraKlientForMonoK)
-    // Nothing happened, so far.
-
-    // Run & block for result
-    val result = program.run(client, username, issueKey).fix()
-
-    result.mono.log().block()
-
+    val client = jiraClient(url, username, password).getOrElse { throw it }
+    val operation = program.getUserViewAndIssueView(client, username, issueKey).fix()
+    operation.mono.log().block()
     client.close()
 }
 
