@@ -22,8 +22,9 @@ To achieve these we leverage the powers of [Kleisli](https://arrow-kt.io/docs/ar
 ### Main classes
 
 * [JiraKlient](src/main/kotlin/routis/jira/klient/JiraKlient.kt): Client's algebra
-* [JiraKlientForMonoK](src/main/kotlin/routis/jira/klient/instances/JiraKlientForMonoK.kt): Implementation for Mono
-* [JiraKlientForSingleK](src/main/kotlin/routis/jira/klient/instances/JiraKlientForSingleK.kt): Implementation for Rx2 Single
+* [JiraKlientForMonoK](src/main/kotlin/routis/jira/klient/instances/JiraKlientForMonoK.kt): Implementation for [Project Reactive's Mono](https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html)
+* [JiraKlientForSingleK](src/main/kotlin/routis/jira/klient/instances/JiraKlientForSingleK.kt): Implementation for [Rx2 Single](http://reactivex.io/documentation/single.html)
+* [JiraKlientForIO](src/main/kotlin/routis/jira/klient/instances/JiraKlientForIO.kt): Implementation for [Arrow's IO](https://arrow-kt.io/docs/effects/io/)
 
 ## Why use it?
 For starters, **JiraKlient** provides a tagless algebra. So, applications can use this abstraction instead of
