@@ -34,4 +34,48 @@ Most importantly, though, **JiraKlient** uses the  Kleisli functional data type.
 compose-able uses of the underlying Atlassian client, without actually calling it, until is
 required.
 
+## Examples
 
+### Lookup for an Issue and, if found, get its transitions
+
+The following code creates a kleisli that returns an view of the Issue
+that contains the data of the issue and its transitions.
+
+```kotlin
+
+data class IssueView(val issue: Issue, val transitions: List<Transition>)
+/**
+ * Conditional, reads.
+ * If there is a issue, then a call for transitions will be placed
+ */
+fun <F> JiraKlient<F>.getIssueView(issueKey: String): JiraKleisli<F, Option<IssueView>> =
+    OPTION_T_JIRA_KLEISLI.binding {
+
+        val issue: Issue = issues.getIssue(issueKey).asOptionT().bind()
+        val ts: List<Transition> = issues.getTransitions(issue).asSomeT().bind()
+
+        IssueView(issue, ts)
+
+    }.fix().value().fix()
+```
+
+To actually run the above code two things need to be provided
+* An instance of the underlying Atlassian's JIRA client  
+* An instance of the JiraKlient<F>, actually choosing effect F (Mono, Single or IO)
+
+```kotlin
+fun main() {
+    
+    val jiraClient = TODO("Create the JIRA client")
+    
+    val issueView : IO<IssueView> = JiraKlientForIO
+        .getIssueView("SOME_ISSUE_KEY")
+        .run(jiraClient).fix()
+    
+    issueView
+        .unsafeRunSync()
+        .also{ println(it) }
+    
+    client.close()
+}
+```
