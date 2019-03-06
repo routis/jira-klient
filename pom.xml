@@ -8,6 +8,12 @@
     <artifactId>jira-klient</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
+    <scm>
+        <url>https://github.com/routis/jira-klient</url>
+        <connection>git@github.com:routis/jira-klient.git</connection>
+        <developerConnection>git@github.com:routis/jira-klient.git</developerConnection>
+    </scm>
+
     <properties>
         <!-- General -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,7 +23,7 @@
 
         <jira-rest-java-client.version>5.1.0</jira-rest-java-client.version>
         <fugue.version>4.7.2</fugue.version>
-        <slf4j-jdk14.version>1.7.25</slf4j-jdk14.version>
+        <slf4j.version>1.7.25</slf4j.version>
         <arrow-kt.version>0.8.2</arrow-kt.version>
     </properties>
 
@@ -103,7 +109,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j-jdk14.version}</version>
+            <version>${slf4j.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

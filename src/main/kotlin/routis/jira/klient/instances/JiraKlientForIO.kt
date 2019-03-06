@@ -22,6 +22,4 @@ object JiraKlientForIO : JiraKlient<ForIO> {
                 override fun fail(t: Throwable) = cb(Either.left(t))
             })
         }
-
-
 }
