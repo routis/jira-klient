@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/routis/jira-klient.svg?branch=master)](https://travis-ci.org/routis/jira-klient)
 # JiraKlient
 
 This is a Kotlin-based asynchronous REST client for JIRA.
