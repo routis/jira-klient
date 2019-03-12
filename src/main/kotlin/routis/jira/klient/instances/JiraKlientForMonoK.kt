@@ -7,7 +7,6 @@ import arrow.effects.k
 import arrow.effects.monok.async.async
 import arrow.effects.typeclasses.Async
 import io.atlassian.util.concurrent.Promise
-import io.atlassian.util.concurrent.Promises
 import reactor.core.publisher.Mono
 import routis.jira.klient.JiraKlient
 
@@ -21,5 +20,12 @@ object JiraKlientForMonoK : JiraKlient<ForMonoK> {
         get() = MonoK.async()
 
     override fun <A> asKind(p: Promise<A>): Kind<ForMonoK, A> =
-        Promises.toCompletableFuture(p).let { Mono.fromFuture(it).k() }
+        Mono.create<A> { sink ->
+            p.then(object : Promise.TryConsumer<A> {
+                override fun accept(t: A): Unit = sink.success(t)
+                override fun fail(t: Throwable): Unit = sink.error(t)
+            })
+        }.k()
+
 }
+
