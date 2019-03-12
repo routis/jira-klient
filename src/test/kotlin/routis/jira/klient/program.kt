@@ -5,6 +5,7 @@ import arrow.core.Option
 import arrow.core.Try
 import arrow.core.Tuple2
 import arrow.data.extensions.list.traverse.traverse
+import arrow.data.extensions.optiont.fx.fx
 import arrow.data.fix
 import com.atlassian.jira.rest.client.api.JiraRestClient
 import com.atlassian.jira.rest.client.api.domain.Issue
@@ -67,15 +68,11 @@ data class IssueView(val issue: Issue, val transitions: List<Transition>)
  * If there is a issue, then a call for transitions will be placed
  */
 private fun <F> JiraKlient<F>.getIssueView(issueKey: String): JiraKleisli<F, Option<IssueView>> =
-    OPTION_T_JIRA_KLEISLI.binding {
-
+    fx(JIRA_KLEISLI) {
         val issue = issues.getIssue(issueKey).asOptionT().bind()
-
         val ts = issues.getTransitions(issue).asSomeT().bind()
         IssueView(issue, ts)
-
-    }.fix().value().fix()
-
+    }.value().fix()
 
 /**
  * All issues should be found, or nothing is returned

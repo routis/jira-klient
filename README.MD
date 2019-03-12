@@ -50,14 +50,11 @@ data class IssueView(val issue: Issue, val transitions: List<Transition>)
  * If there is a issue, then a call for transitions will be placed
  */
 fun <F> JiraKlient<F>.getIssueView(issueKey: String): JiraKleisli<F, Option<IssueView>> =
-    OPTION_T_JIRA_KLEISLI.binding {
-
-        val issue: Issue = issues.getIssue(issueKey).asOptionT().bind()
-        val ts: List<Transition> = issues.getTransitions(issue).asSomeT().bind()
-
+    fx(JIRA_KLEISLI) {
+        val issue = issues.getIssue(issueKey).asOptionT().bind()
+        val ts = issues.getTransitions(issue).asSomeT().bind()
         IssueView(issue, ts)
-
-    }.fix().value().fix()
+    }.value().fix()
 ```
 
 To actually run the above code two things need to be provided
