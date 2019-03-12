@@ -4,7 +4,8 @@ import arrow.Kind
 import arrow.core.Either
 import arrow.effects.ForIO
 import arrow.effects.IO
-import arrow.effects.instances.io.async.async
+import arrow.effects.extensions.io.async.async
+
 import arrow.effects.typeclasses.Async
 import io.atlassian.util.concurrent.Promise
 import routis.jira.klient.JiraKlient

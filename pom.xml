@@ -24,7 +24,7 @@
         <jira-rest-java-client.version>5.1.0</jira-rest-java-client.version>
         <fugue.version>4.7.2</fugue.version>
         <slf4j.version>1.7.25</slf4j.version>
-        <arrow-kt.version>0.8.2</arrow-kt.version>
+        <arrow-kt.version>0.9.0</arrow-kt.version>
     </properties>
 
     <dependencies>
@@ -38,7 +38,12 @@
         </dependency>
         <dependency>
             <groupId>io.arrow-kt</groupId>
-            <artifactId>arrow-core</artifactId>
+            <artifactId>arrow-core-data</artifactId>
+            <version>${arrow-kt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.arrow-kt</groupId>
+            <artifactId>arrow-core-extensions</artifactId>
             <version>${arrow-kt.version}</version>
         </dependency>
         <dependency>
@@ -51,51 +56,44 @@
             <artifactId>arrow-typeclasses</artifactId>
             <version>${arrow-kt.version}</version>
         </dependency>
+
         <dependency>
             <groupId>io.arrow-kt</groupId>
-            <artifactId>arrow-data</artifactId>
+            <artifactId>arrow-effects-data</artifactId>
             <version>${arrow-kt.version}</version>
         </dependency>
         <dependency>
             <groupId>io.arrow-kt</groupId>
-            <artifactId>arrow-instances-core</artifactId>
+            <artifactId>arrow-effects-extensions</artifactId>
             <version>${arrow-kt.version}</version>
         </dependency>
         <dependency>
             <groupId>io.arrow-kt</groupId>
-            <artifactId>arrow-instances-data</artifactId>
+            <artifactId>arrow-effects-io-extensions</artifactId>
+            <version>${arrow-kt.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.arrow-kt</groupId>
+            <artifactId>arrow-effects-reactor-data</artifactId>
             <version>${arrow-kt.version}</version>
         </dependency>
         <dependency>
             <groupId>io.arrow-kt</groupId>
-            <artifactId>arrow-effects</artifactId>
+            <artifactId>arrow-effects-reactor-extensions</artifactId>
             <version>${arrow-kt.version}</version>
         </dependency>
         <dependency>
             <groupId>io.arrow-kt</groupId>
-            <artifactId>arrow-effects-instances</artifactId>
+            <artifactId>arrow-effects-rx2-data</artifactId>
             <version>${arrow-kt.version}</version>
         </dependency>
         <dependency>
             <groupId>io.arrow-kt</groupId>
-            <artifactId>arrow-effects-reactor</artifactId>
+            <artifactId>arrow-effects-rx2-extensions</artifactId>
             <version>${arrow-kt.version}</version>
         </dependency>
-        <dependency>
-            <groupId>io.arrow-kt</groupId>
-            <artifactId>arrow-effects-reactor-instances</artifactId>
-            <version>${arrow-kt.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.arrow-kt</groupId>
-            <artifactId>arrow-effects-rx2</artifactId>
-            <version>${arrow-kt.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.arrow-kt</groupId>
-            <artifactId>arrow-effects-rx2-instances</artifactId>
-            <version>${arrow-kt.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>

@@ -1,7 +1,7 @@
 package routis.jira.klient
 
 import arrow.core.getOrElse
-import arrow.effects.fix
+import arrow.effects.reactor.fix
 import routis.jira.klient.instances.JiraKlientForMonoK
 
 fun main(args: Array<String>) {

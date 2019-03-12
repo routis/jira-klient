@@ -1,10 +1,11 @@
 package routis.jira.klient.instances
 
 import arrow.Kind
-import arrow.effects.ForSingleK
-import arrow.effects.SingleK
-import arrow.effects.k
-import arrow.effects.singlek.async.async
+import arrow.effects.rx2.ForSingleK
+import arrow.effects.rx2.SingleK
+import arrow.effects.rx2.extensions.singlek.async.async
+import arrow.effects.rx2.k
+
 import arrow.effects.typeclasses.Async
 import io.atlassian.util.concurrent.Promise
 import io.atlassian.util.concurrent.Promises

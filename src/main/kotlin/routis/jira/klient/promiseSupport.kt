@@ -6,9 +6,9 @@ import arrow.data.Kleisli
 import arrow.data.KleisliPartialOf
 import arrow.data.OptionT
 import arrow.data.OptionTPartialOf
+import arrow.data.extensions.kleisli.monad.monad
+import arrow.data.extensions.optiont.monad.monad
 import arrow.effects.typeclasses.Async
-import arrow.instances.kleisli.monad.monad
-import arrow.instances.optiont.monad.monad
 import arrow.typeclasses.Monad
 import com.atlassian.jira.rest.client.api.JiraRestClient
 import com.atlassian.jira.rest.client.api.RestClientException
@@ -22,7 +22,7 @@ import routis.jira.klient.util.asSomeT
  *
  * This alias defines a getter to one of these clients
  */
-typealias Client<C> = (Ctx)-> C
+typealias Client<C> = (Ctx) -> C
 
 /**
  * [JiraRestClient] is an asynchronous REST client that is build around the [Promise] class.

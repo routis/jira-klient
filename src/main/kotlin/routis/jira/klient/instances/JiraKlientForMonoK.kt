@@ -1,10 +1,11 @@
 package routis.jira.klient.instances
 
 import arrow.Kind
-import arrow.effects.ForMonoK
-import arrow.effects.MonoK
-import arrow.effects.k
-import arrow.effects.monok.async.async
+
+import arrow.effects.reactor.ForMonoK
+import arrow.effects.reactor.MonoK
+import arrow.effects.reactor.extensions.monok.async.async
+import arrow.effects.reactor.k
 import arrow.effects.typeclasses.Async
 import io.atlassian.util.concurrent.Promise
 import reactor.core.publisher.Mono

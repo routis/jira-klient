@@ -4,8 +4,8 @@ import arrow.Kind
 import arrow.core.Option
 import arrow.core.Try
 import arrow.core.Tuple2
+import arrow.data.extensions.list.traverse.traverse
 import arrow.data.fix
-import arrow.instances.list.traverse.traverse
 import com.atlassian.jira.rest.client.api.JiraRestClient
 import com.atlassian.jira.rest.client.api.domain.Issue
 import com.atlassian.jira.rest.client.api.domain.Transition
