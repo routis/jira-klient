@@ -16,6 +16,7 @@ import io.atlassian.util.concurrent.Promise
 import io.atlassian.util.concurrent.Promises
 import routis.jira.klient.util.asSomeT
 
+
 /**
  * [JiraRestClient] contains various specific purpose clients like
  * [com.atlassian.jira.rest.client.api.IssueRestClient].

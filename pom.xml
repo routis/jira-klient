@@ -36,6 +36,7 @@
             <groupId>com.atlassian.jira</groupId>
             <artifactId>jira-rest-java-client-core</artifactId>
         </dependency>
+
         <dependency>
             <groupId>io.arrow-kt</groupId>
             <artifactId>arrow-core-data</artifactId>
@@ -54,6 +55,16 @@
         <dependency>
             <groupId>io.arrow-kt</groupId>
             <artifactId>arrow-typeclasses</artifactId>
+            <version>${arrow-kt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.arrow-kt</groupId>
+            <artifactId>arrow-extras-data</artifactId>
+            <version>${arrow-kt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.arrow-kt</groupId>
+            <artifactId>arrow-extras-extensions</artifactId>
             <version>${arrow-kt.version}</version>
         </dependency>
 
