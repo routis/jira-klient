@@ -2,7 +2,10 @@ sudo: false
 language: java
 jdk:
   - openjdk8
+  - openjdk11
 script: mvn clean verify
 cache:
   directories:
-    - $HOME/.m2
+    - $HOME/.m2/repository
+before_cache:
+  - rm -rf $HOME/.m2/repository/routis/jira/klient
